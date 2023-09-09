@@ -1,0 +1,2 @@
+[phases.setup]
+aptPkgs = ["...", "iproute2", "iputils-ping", "dnsutils"]
