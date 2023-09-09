@@ -47,7 +47,7 @@ const Home: NextPage = () => {
         <div className="flex h-full w-full flex-col items-center justify-start gap-2 gap-y-8">
           <Title />
           <div className="flex h-full min-h-0 w-full gap-4 px-4">
-            <div className="flex h-full w-full max-w-[50%] border">
+            <div className="flex h-full w-full max-w-[40%]">
               <RegionsGlobe
                 selectedRegion={selectedRegion}
                 onRegionSelected={(region) => {

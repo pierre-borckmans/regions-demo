@@ -191,14 +191,13 @@ export default function RegionsGlobe({
         globeImageUrl="globe.jpg"
         backgroundColor="#0000"
         atmosphereColor={"hsl(47,60%,67%)"}
-        atmosphereAltitude={0.3}
+        atmosphereAltitude={0.25}
         // onGlobeClick={emitArc}
         arcsData={arcsData}
         arcColor={() => "hsla(290,75%,55%,1%)"}
         arcStroke={1.2}
         arcDashLength={ARC_REL_LEN}
         arcDashGap={10}
-        arcAltitude={0.3}
         arcDashInitialGap={1}
         arcDashAnimateTime={FLIGHT_TIME}
         arcsTransitionDuration={0}
