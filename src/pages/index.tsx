@@ -1,14 +1,19 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import AppCard from "~/components/AppCard";
 import Title from "~/components/Title";
 import dynamic from "next/dynamic";
-import {GlobeProps} from "react-globe.gl";
+import { RegionsGlobeProps } from "~/components/RegionsGlobe";
+import { useState } from "react";
+import { Region, REGIONS } from "~/constants/regions";
 
-export const RegionsGlobe = dynamic<GlobeProps>(() => import("../components/RegionsGlobe"), {
+export const RegionsGlobe = dynamic<RegionsGlobeProps>(
+  () => import("../components/RegionsGlobe"),
+  {
     ssr: false,
-});
+  }
+);
 const Home: NextPage = () => {
+  const [selectedRegion, setSelectedRegion] = useState<Region>(REGIONS[0]!);
   return (
     <>
       <Head>
@@ -36,8 +41,15 @@ const Home: NextPage = () => {
       >
         <div className="flex h-full min-h-0 w-full flex-col items-center justify-start gap-2 gap-y-8">
           <Title />
-            <RegionsGlobe/>
-
+          <div className="flex flex-col items-center gap-1 text-white">
+            <div>{selectedRegion.id}</div>
+            <div>{selectedRegion.name}</div>
+          </div>
+          <RegionsGlobe
+            onRegionSelected={(region) => {
+              setSelectedRegion(region);
+            }}
+          />
         </div>
       </main>
     </>
