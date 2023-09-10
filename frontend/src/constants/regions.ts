@@ -1,7 +1,7 @@
-const EUROPE = process.env.EUROPE_HOST || "europe";
-const ASIA = process.env.ASIA_HOST || "asia";
-const US_WEST = process.env.USWEST_HOST || "us-west";
-const US_EAST = process.env.USEAST_HOST || "us-east";
+const EUROPE = process.env.EUROPE_HOST || "reg-europe";
+const ASIA = process.env.ASIA_HOST || "reg-asia";
+const US_WEST = process.env.USWEST_HOST || "reg-us-west";
+const US_EAST = process.env.USEAST_HOST || "reg-us-east";
 
 export type Region = {
   id: string;
