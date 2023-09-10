@@ -38,7 +38,7 @@ export const REGIONS: Region[] = [
     host:
       process.env.NODE_ENV === "development"
         ? `http://localhost:4444`
-        : `http://${getHost("europe-west4")}-production.up.railway.app`,
+        : `https://${getHost("europe-west4")}-production.up.railway.app`,
   },
   {
     id: "us-west1",
@@ -51,7 +51,7 @@ export const REGIONS: Region[] = [
     host:
       process.env.NODE_ENV === "development"
         ? `http://localhost:4444`
-        : `http://${getHost("us-west1")}-production.up.railway.app`,
+        : `https://${getHost("us-west1")}-production.up.railway.app`,
   },
   {
     id: "us-east4",
@@ -64,7 +64,7 @@ export const REGIONS: Region[] = [
     host:
       process.env.NODE_ENV === "development"
         ? `http://localhost:4444`
-        : `http://${getHost("us-east4")}-production.up.railway.app`,
+        : `https://${getHost("us-east4")}-production.up.railway.app`,
   },
   {
     id: "asia-southeast1",
@@ -77,6 +77,6 @@ export const REGIONS: Region[] = [
     host:
       process.env.NODE_ENV === "development"
         ? `http://localhost:4444`
-        : `http://${getHost("asia-southeast1")}-production.up.railway.app`,
+        : `https://${getHost("asia-southeast1")}-production.up.railway.app`,
   },
 ];
