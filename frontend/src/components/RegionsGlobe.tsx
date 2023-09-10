@@ -30,7 +30,7 @@ const markerSvg = (strokeCol: string) => `
 `;
 
 export type RegionsGlobeProps = {
-  onRegionSelected: (region: Region) => void;
+  onRegionSelected: (region?: Region) => void;
   selectedRegion?: Region;
 };
 export default function RegionsGlobe({
@@ -72,6 +72,8 @@ export default function RegionsGlobe({
   const [ringsData, setRingsData] = useState<{ lat: number; lng: number }[]>(
     []
   );
+
+  const [selectingRegion, setSelectingRegion] = useState(false);
 
   // const emitArcFromRegionToSelf = (region: Region) => {
   //   const { lat: startLat, lng: startLng } = region;
@@ -186,13 +188,16 @@ export default function RegionsGlobe({
       <ReactGlobe
         ref={globeEl}
         width={width}
-        height={height * 1.25}
+        height={height! * 1.25}
         showGraticules={false}
         globeImageUrl="globe.jpg"
         backgroundColor="#0000"
         atmosphereColor={"hsl(47,60%,67%)"}
         atmosphereAltitude={0.25}
-        // onGlobeClick={emitArc}
+        onGlobeClick={() => {
+          if (selectingRegion) return;
+          onRegionSelected(undefined);
+        }}
         arcsData={arcsData}
         arcColor={() => "hsla(290,75%,55%,1%)"}
         arcStroke={1.2}
@@ -220,6 +225,12 @@ export default function RegionsGlobe({
           marker.style["pointer-events"] = "auto";
           marker.style.cursor = "pointer";
           marker.onclick = (e) => {
+            setSelectingRegion(true);
+            setTimeout(() => {
+              setSelectingRegion(false);
+            }, 200);
+            e.stopPropagation();
+            e.preventDefault();
             if (e.shiftKey) {
               selectRegion(region as Region, false);
               return;

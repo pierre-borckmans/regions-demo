@@ -19,6 +19,8 @@ const Home: NextPage = () => {
   const [selectedRegion, setSelectedRegion] = useState<Region | undefined>(
     undefined
   );
+  const [lastRefresh, setLastRefresh] = useState(Date.now());
+
   return (
     <>
       <Head>
@@ -27,7 +29,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main
-        className="flex h-screen min-h-0 w-full min-w-0 flex-col items-center py-8"
+        className="flex h-screen min-h-0 w-full min-w-0 flex-col items-center py-4"
         style={{
           backgroundImage: `linear-gradient(
             140deg,
@@ -44,18 +46,19 @@ const Home: NextPage = () => {
         )`,
         }}
       >
-        <div className="flex h-full w-full flex-col items-center justify-start gap-2 gap-y-8">
+        <div className="flex h-full w-full flex-col items-center justify-start gap-2 gap-y-6">
           <Title />
           <div className="flex h-full min-h-0 w-full gap-4 px-4">
-            <div className="flex h-full w-full max-w-[40%]">
+            <div className="flex h-full w-full max-w-[50%]">
               <RegionsGlobe
                 selectedRegion={selectedRegion}
                 onRegionSelected={(region) => {
+                  setLastRefresh(Date.now());
                   setSelectedRegion(region);
                 }}
               />
             </div>
-            <Info selectedRegion={selectedRegion} />
+            <Info selectedRegion={selectedRegion} lastRefresh={lastRefresh} />
           </div>
         </div>
       </main>
