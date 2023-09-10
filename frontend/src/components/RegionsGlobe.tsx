@@ -88,7 +88,7 @@ export default function RegionsGlobe({
   const handleGlobeReady = () => {
     onGlobeReady();
     setTimeout(() => {
-      const { lat, lng } = REGIONS[1]!;
+      const { lat, lng } = REGIONS[Math.round(Math.random() * 3)]!;
       globeEl.current!.pointOfView({ lat, lng });
       setGlobeReady(true);
     }, 500);
