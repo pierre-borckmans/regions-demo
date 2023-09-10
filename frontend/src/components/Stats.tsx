@@ -39,7 +39,12 @@ export default function Stats({ lastRefresh }: Props) {
       px-2 py-0.5 text-white shadow-2xl drop-shadow-2xl transition-all
       duration-200 hover:scale-[1.03] hover:bg-white/20`}
     >
-      <span className="text-xl">Inter-region Trips Durations</span>
+      {/*<div className="flex items-center gap-1">*/}
+      <span className="text-2xl">Inter-region Trips Durations</span>
+      <span className="mt-[-10px] text-lg text-gray-300">
+        (avg / min / max)
+      </span>
+      {/*</div>*/}
       <div className="flex w-full items-center justify-center gap-2 text-[rgb(204,102,255)]">
         <div className="flex w-full items-center justify-center gap-1 text-lg">
           <Image
@@ -106,14 +111,16 @@ const Table = ({
           <div className="flex w-28 justify-center text-3xl">{region.flag}</div>
           {REGIONS!.map((otherRegion) => (
             <div
-              className="flex w-28 justify-center"
+              className="text-mono flex w-28 justify-center"
               key={`otherreg-${otherRegion.id}`}
             >
               {stats &&
               stats[region.id] &&
               stats[region.id]![otherRegion.id] &&
               stats[region.id]![otherRegion.id]!.public.avg
-                ? Math.round(stats![region.id]![otherRegion.id]!.public!.avg)
+                ? `${Math.round(
+                    stats![region.id]![otherRegion.id]!.public!.avg + 3
+                  )}ms`
                 : "-"}
             </div>
           ))}

@@ -61,7 +61,7 @@ app.get("/pingAll", async (req, res) => {
             data[region].public.push(pub);
 
             start = Date.now();
-            // await axios.get(`${host.private}/ping`, {httpsAgent})
+            await axios.get(`${host.private}/ping`, {httpsAgent})
             const priv = Date.now() - start;
             data[region].private.push(priv);
 
