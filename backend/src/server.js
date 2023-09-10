@@ -1,6 +1,12 @@
 const express = require("express");
 const cors = require('cors')
 const ping = require("ping");
+const axios = require('axios');
+const https = require("https")
+
+const httpsAgent = new https.Agent({
+    rejectUnauthorized: false,
+});
 
 const port = process.env.PORT || 4444;
 const app = express();
@@ -13,25 +19,25 @@ const usEast = process.env.USEAST_HOST || 'reg-us-east';
 
 let regions = {
     'europe-west4': {
-        private: `${europe}.railway.internal`,
+        private: `http://${europe}.railway.internal:3000`,
         public:
-            `${europe}-production.up.railway.app`
+            `https://${europe}-production.up.railway.app`
     },
     'asia-southeast1': {
-        private: `${asia}.railway.internal`,
+        private: `http://${asia}.railway.internal:3000`,
         public:
-            `${asia}-production.up.railway.app`
+            `https://${asia}-production.up.railway.app`
     },
     'us-west1': {
-        private: `${usWest}.railway.internal`,
+        private: `http://${usWest}.railway.internal:3000`,
         public:
-            `${usWest}-production.up.railway.app`
+            `https://${usWest}-production.up.railway.app`
     }
     ,
     'us-east4': {
-        private: `${usEast}.railway.internal`,
+        private: `http://${usEast}.railway.internal:3000`,
         public:
-            `${usEast}-production.up.railway.app`
+            `https://${usEast}-production.up.railway.app`
     },
 }
 
@@ -43,26 +49,39 @@ let data = Object.fromEntries(Object.keys(regions).map(region => {
 }));
 
 
-app.get("/ping", async (req, res) => {
+app.get("/pingAll", async (req, res) => {
     let pings = await Promise.all(Object.entries(regions).map(async ([region, host]) => {
-            const pub = await ping.promise.probe(host.public);
-            const priv = await ping.promise.probe(host.private);
-            data[region].public.push(pub.time);
-            data[region].private.push(priv.time);
+            // const pub = await ping.promise.probe(host.public);
+            // const priv = await ping.promise.probe(host.private);
+
+            let start = Date.now();
+            await axios.get(`${host.public}/ping`, {httpsAgent})
+            const pub = Date.now() - start;
+
+            data[region].public.push(pub);
+
+            start = Date.now();
+            await axios.get(`${host.private}/ping`, {httpsAgent})
+            const priv = Date.now() - start;
+            data[region].private.push(priv);
 
             return [region, {
-                public: pub.time,
-                private: priv.time,
+                public: pub,
+                private: priv,
             }]
 
         }
     ));
     const results = Object.fromEntries(pings);
-    console.log(results);
     res.send(
         results
     );
 });
+
+app.get("/ping", async (req, res) => {
+    res.send("PONG")
+});
+
 
 const average = (values) => {
     if (values.length === 0) return -1;

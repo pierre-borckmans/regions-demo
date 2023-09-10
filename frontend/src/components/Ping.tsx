@@ -15,7 +15,7 @@ type Props = {
 export default function Ping({ selectedRegion, lastRefresh }: Props) {
   const [loading, setLoading] = useState(true);
   const pingRegions = async () => {
-    const r = (await fetch(`${selectedRegion!.host}/ping`)).json();
+    const r = (await fetch(`${selectedRegion!.host}/pingAll`)).json();
     return r;
   };
 
