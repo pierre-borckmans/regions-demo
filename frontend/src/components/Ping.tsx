@@ -60,7 +60,7 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
                 <div className="flex flex-col gap-1">
                   {REGIONS.map((region) => (
                     <div className="flex items-center gap-1">
-                      <span>To {region.flag} :</span>
+                      <span>{region.flag} </span>
                       <span>{pingResults[region.id].private} ms</span>
                     </div>
                   ))}
@@ -80,7 +80,7 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
                 <div className="flex flex-col gap-1">
                   {REGIONS.map((region) => (
                     <div className="flex items-center gap-1">
-                      <span>To {region.flag} :</span>
+                      <span>{region.flag} </span>
                       <span>{pingResults[region.id].public} ms</span>
                     </div>
                   ))}
