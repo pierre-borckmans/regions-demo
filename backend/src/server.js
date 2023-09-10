@@ -61,7 +61,7 @@ app.get("/pingAll", async (req, res) => {
             data[region].public.push(pub);
 
             start = Date.now();
-            await axios.get(`${host.private}/ping`, {httpsAgent})
+            // await axios.get(`${host.private}/ping`, {httpsAgent})
             const priv = Date.now() - start;
             data[region].private.push(priv);
 
@@ -84,7 +84,7 @@ app.get("/ping", async (req, res) => {
 
 
 const average = (values) => {
-    if (values.length === 0) return -1;
+    if (values.length === 0) return undefined;
     return values.reduce((a, b) => (a + b)) / values.length;
 }
 

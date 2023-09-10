@@ -45,7 +45,7 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
 
   return (
     <div
-      className={`flex h-[240px] min-h-0 w-full flex-col justify-center gap-1 rounded-xl border-2
+      className={`flex h-[260px] min-h-0 w-full flex-col justify-center gap-1 rounded-xl border-2
       bg-white/10 px-2 text-white shadow-2xl drop-shadow-2xl
       transition-all duration-200 hover:scale-[1.03] hover:bg-white/20`}
     >
@@ -136,7 +136,7 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
                       </div>
                     </div>
                     <span className="mt-3 text-xs italic text-purple-200">
-                      Now, those are some real fast trains!
+                      Wow, those are some real fast trains!
                     </span>
                   </>
                 )}
