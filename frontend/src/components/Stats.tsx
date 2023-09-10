@@ -6,7 +6,7 @@ type Props = {
 };
 export default function Stats({ lastRefresh }: Props) {
   const getStats = async (region: Region) => {
-    const r = (await fetch(`${region!.host}/ping`)).json();
+    const r = (await fetch(`${region!.host}/stats`)).json();
     return r;
   };
 
