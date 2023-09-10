@@ -2,17 +2,23 @@ export default function Title() {
   return (
     <div className="flex items-center gap-8">
       <div className="relative flex">
-        <img src="/logo-dark.svg" width={44} className="mr-1 animate-pulse blur-[0px]" />
+        <img
+          src="/logo-dark.svg"
+          width={44}
+          className="mr-1 animate-pulse blur-[0px]"
+        />
       </div>
 
       <h1 className="flex flex-col items-center gap-0 font-extrabold tracking-tight text-white">
-        <span className="text-xl text-[hsl(290,75%,55%)]">Railway Regions</span>
+        <span className="text-xl text-[hsl(290,75%,55%)]">
+          Railway World Trip
+        </span>
         <div className="relative flex">
-          <span className="absolute text-2xl text-[hsl(280,100%,80%)] ">
-            Playground
+          <span className="absolute text-lg text-[hsl(280,100%,80%)] ">
+            Regions Playground
           </span>
-          <span className="animate-pulse text-2xl text-white/50 blur-[14px]">
-            Playground
+          <span className="animate-pulse text-lg text-white/50 blur-[14px]">
+            Regions Playground
           </span>
         </div>
       </h1>

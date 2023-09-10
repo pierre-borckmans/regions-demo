@@ -188,7 +188,7 @@ export default function RegionsGlobe({
       <ReactGlobe
         ref={globeEl}
         width={width}
-        height={height! * 1.25}
+        height={Math.min(height! * 1.25, width! * 1.25)}
         showGraticules={false}
         globeImageUrl="globe.jpg"
         backgroundColor="#0000"
