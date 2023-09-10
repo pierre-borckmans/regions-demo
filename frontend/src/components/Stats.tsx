@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { Region, REGIONS } from "~/constants/regions";
 import Image from "next/image";
+import { useState } from "react";
 
 type Props = {
   lastRefresh: number;
 };
 export default function Stats({ lastRefresh }: Props) {
+  const [isPublic, setPublic] = useState(false);
   const getStats = async (region: Region) => {
     const r = (await fetch(`${region!.host}/stats`)).json();
     return r;
@@ -42,32 +44,28 @@ export default function Stats({ lastRefresh }: Props) {
       {/*<div className="flex items-center gap-1">*/}
       <span className="text-2xl">Inter-region Trips Durations</span>
       <span className="mt-[-10px] text-lg text-gray-300">
-        (avg / min / max)
+        min | avg | max (ms)
       </span>
       {/*</div>*/}
-      <div className="flex w-full items-center justify-center gap-2 text-[rgb(204,102,255)]">
-        <div className="flex w-full items-center justify-center gap-1 text-lg">
-          <Image
-            src="private-networking.svg"
-            alt="private networking"
-            width={20}
-            height={20}
-          />
+      <div className="flex items-center justify-center gap-4 text-[rgb(224,102,255)]">
+        <div
+          className={`flex cursor-pointer items-center justify-center gap-1 rounded px-2 py-1 text-lg
+          ${!isPublic && "border bg-purple-400 text-white"}`}
+          onClick={() => setPublic(false)}
+        >
           <span>Via Private Network</span>
         </div>
-        <div className="flex w-full items-center justify-center gap-1 text-lg">
-          <img
-            src="/globe.svg"
-            alt="internet"
-            width={20}
-            height={20}
-            className="stroke-red"
-          />
+        <div
+          className={`flex cursor-pointer items-center justify-center gap-1 rounded px-2 py-1 text-lg
+          ${isPublic && "border bg-purple-400 text-white"}`}
+          onClick={() => setPublic(true)}
+        >
           <span>Via Internet</span>
         </div>
       </div>
       <div className="flex w-full justify-center gap-1 text-3xl">
         <Table
+          isPublic={isPublic}
           stats={{
             "europe-west4": statsEurope,
             "asia-southeast1": statsAsia,
@@ -84,8 +82,10 @@ export default function Stats({ lastRefresh }: Props) {
 }
 
 const Table = ({
+  isPublic,
   stats,
 }: {
+  isPublic: boolean;
   stats: Record<
     string,
     Record<
@@ -97,13 +97,13 @@ const Table = ({
     >
   >;
 }) => {
-  console.log(stats);
+  const field = isPublic ? "public" : "private";
   return (
     <div className="text-mono flex flex-col text-sm">
       <div className="flex">
         <div className="flex w-28"></div>
         {REGIONS!.map((region) => (
-          <div className="flex w-28 justify-center text-3xl">{region.flag}</div>
+          <div className="flex w-36 justify-center text-3xl">{region.flag}</div>
         ))}
       </div>
       {REGIONS!.map((region) => (
@@ -111,17 +111,39 @@ const Table = ({
           <div className="flex w-28 justify-center text-3xl">{region.flag}</div>
           {REGIONS!.map((otherRegion) => (
             <div
-              className="text-mono flex w-28 justify-center"
-              key={`otherreg-${otherRegion.id}`}
+              className="flex w-36 justify-center gap-2 font-mono"
+              key={`otherreg-${otherRegion.id} `}
             >
-              {stats &&
-              stats[region.id] &&
-              stats[region.id]![otherRegion.id] &&
-              stats[region.id]![otherRegion.id]!.public.avg
-                ? `${Math.round(
-                    stats![region.id]![otherRegion.id]!.public!.avg + 3
-                  )}ms`
-                : "-"}
+              <span className="border-r pr-2 text-emerald-400">
+                {stats &&
+                stats[region.id] &&
+                stats[region.id]![otherRegion.id] &&
+                stats[region.id]![otherRegion.id]![field].min
+                  ? `${Math.round(
+                      stats![region.id]![otherRegion.id]![field]!.min
+                    )}`
+                  : "-"}
+              </span>
+              <span className="border-r pr-2 text-sky-200">
+                {stats &&
+                stats[region.id] &&
+                stats[region.id]![otherRegion.id] &&
+                stats[region.id]![otherRegion.id]![field].avg
+                  ? `${Math.round(
+                      stats![region.id]![otherRegion.id]![field]!.avg
+                    )}`
+                  : "-"}
+              </span>
+              <span className="text-red-300">
+                {stats &&
+                stats[region.id] &&
+                stats[region.id]![otherRegion.id] &&
+                stats[region.id]![otherRegion.id]![field].max
+                  ? `${Math.round(
+                      stats![region.id]![otherRegion.id]![field]!.max
+                    )}`
+                  : "-"}
+              </span>
             </div>
           ))}
         </div>

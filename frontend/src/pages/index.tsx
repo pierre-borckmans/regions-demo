@@ -48,7 +48,7 @@ const Home: NextPage = () => {
         <div className="flex h-full w-full flex-col items-center justify-start gap-2 gap-y-6">
           <Title />
           <div className="flex h-full min-h-0 w-full gap-4 px-4">
-            <div className="flex h-full w-full max-w-[60%]">
+            <div className="flex h-full w-full max-w-[calc(100vw_-_770px)]">
               {globeReady ? null : (
                 <div className="flex h-full w-full items-center justify-center gap-1">
                   <div className="flex items-center gap-3">
