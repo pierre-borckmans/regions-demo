@@ -4,7 +4,7 @@ import Title from "~/components/Title";
 import dynamic from "next/dynamic";
 import { RegionsGlobeProps } from "~/components/RegionsGlobe";
 import React, { useState } from "react";
-import { Region } from "~/constants/regions";
+import { Region, REGIONS } from "~/constants/regions";
 import Info from "~/components/Info";
 
 export const RegionsGlobe = dynamic<RegionsGlobeProps>(

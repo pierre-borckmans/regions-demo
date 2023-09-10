@@ -79,9 +79,17 @@ export default function RegionsGlobe({
 
   const [globeReady, setGlobeReady] = useState(false);
 
+  const viewAllRegions = () => {
+    const lat = 69.338777;
+    const lng = 67.043438;
+    globeEl.current!.pointOfView({ lat, lng }, 1000);
+  };
+
   const handleGlobeReady = () => {
     onGlobeReady();
     setTimeout(() => {
+      const { lat, lng } = REGIONS[1];
+      globeEl.current!.pointOfView({ lat, lng });
       setGlobeReady(true);
     }, 500);
   };
@@ -164,8 +172,21 @@ export default function RegionsGlobe({
   };
 
   return (
-    <div ref={ref} className="flex h-full w-full  items-center">
-      <div className={`${globeReady ? "flex" : "hidden"}`}>
+    <div
+      ref={ref}
+      className="flex h-full w-full flex-col  items-center justify-center"
+    >
+      <div
+        className={`${
+          globeReady ? "space-around flex flex-col items-start" : "hidden"
+        }`}
+      >
+        <button
+          className="z-10 mb-[-120px] mt-[130px] w-32 cursor-pointer rounded border-2 text-white hover:scale-105 hover:text-gray-300"
+          onClick={viewAllRegions}
+        >
+          Show all regions
+        </button>
         <ReactGlobe
           onGlobeReady={handleGlobeReady}
           waitForGlobeReady={true}
