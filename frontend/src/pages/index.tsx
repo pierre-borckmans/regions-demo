@@ -29,7 +29,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main
-        className="flex h-screen min-h-0 w-full min-w-0 flex-col items-center py-4"
+        className="flex h-screen min-h-0 w-full min-w-0 flex-col items-center py-4 pr-4"
         style={{
           backgroundImage: `linear-gradient(
             140deg,
@@ -49,7 +49,7 @@ const Home: NextPage = () => {
         <div className="flex h-full w-full flex-col items-center justify-start gap-2 gap-y-6">
           <Title />
           <div className="flex h-full min-h-0 w-full gap-4 px-4">
-            <div className="flex h-full w-full max-w-[50%]">
+            <div className="flex h-full w-full max-w-[60%]">
               <RegionsGlobe
                 selectedRegion={selectedRegion}
                 onRegionSelected={(region) => {
