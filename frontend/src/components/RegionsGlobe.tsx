@@ -30,12 +30,14 @@ const markerSvg = (strokeCol: string) => `
 `;
 
 export type RegionsGlobeProps = {
+  onGlobeReady: () => void;
   onRegionSelected: (region?: Region) => void;
   selectedRegion?: Region;
 };
 export default function RegionsGlobe({
   selectedRegion,
   onRegionSelected,
+  onGlobeReady,
 }: RegionsGlobeProps) {
   const { ref, width, height } = useResizeObserver<HTMLDivElement>();
   const globeEl = useRef<
@@ -75,36 +77,14 @@ export default function RegionsGlobe({
 
   const [selectingRegion, setSelectingRegion] = useState(false);
 
-  // const emitArcFromRegionToSelf = (region: Region) => {
-  //   const { lat: startLat, lng: startLng } = region;
-  //   const arc = {
-  //     startLat,
-  //     startLng,
-  //     endLat: startLat + 8,
-  //     endLng: startLng,
-  //   };
-  //   const backArc = {
-  //     startLat: startLat + 8,
-  //     startLng: startLng,
-  //     endLat: startLat,
-  //     endLng: startLng,
-  //   };
-  //   setArcsData((curArcsData) => [...curArcsData, arc]);
-  //   setTimeout(() => {
-  //     // backward arc
-  //     setArcsData((curArcsData) => [
-  //       ...curArcsData.filter((d) => d !== arc),
-  //       backArc,
-  //     ]);
-  //     setTimeout(
-  //       () =>
-  //         setArcsData((curArcsData) =>
-  //           curArcsData.filter((d) => d !== backArc)
-  //         ),
-  //       FLIGHT_TIME
-  //     );
-  //   }, FLIGHT_TIME);
-  // };
+  const [globeReady, setGlobeReady] = useState(false);
+
+  const handleGlobeReady = () => {
+    onGlobeReady();
+    setTimeout(() => {
+      setGlobeReady(true);
+    }, 500);
+  };
 
   const emitArcFromRegionToAnother = (region: Region, otherRegion: Region) => {
     const { lat: startLat, lng: startLng } = region;
@@ -185,61 +165,65 @@ export default function RegionsGlobe({
 
   return (
     <div ref={ref} className="flex h-full w-full  items-center">
-      <ReactGlobe
-        ref={globeEl}
-        width={width}
-        height={Math.min(height! * 1.25, width! * 1.25)}
-        showGraticules={false}
-        globeImageUrl="globe.jpg"
-        backgroundColor="#0000"
-        atmosphereColor={"hsl(47,60%,67%)"}
-        atmosphereAltitude={0.25}
-        onGlobeClick={() => {
-          if (selectingRegion) return;
-          onRegionSelected(undefined);
-        }}
-        arcsData={arcsData}
-        arcColor={() => "hsla(290,75%,55%,1%)"}
-        arcStroke={1.2}
-        arcDashLength={ARC_REL_LEN}
-        arcDashGap={10}
-        arcDashInitialGap={1}
-        arcDashAnimateTime={FLIGHT_TIME}
-        arcsTransitionDuration={0}
-        ringsData={ringsData}
-        ringColor={() => (t: number) => `rgba(198,54,226,1})`}
-        ringMaxRadius={RINGS_MAX_R}
-        ringPropagationSpeed={RING_PROPAGATION_SPEED}
-        ringRepeatPeriod={(FLIGHT_TIME * ARC_REL_LEN) / NUM_RINGS}
-        htmlElementsData={REGIONS}
-        htmlElement={(region: object) => {
-          const isSelected = region === selectedRegion;
-          const marker = document.createElement("div") as HTMLElement;
-          marker.style.marginTop = isSelected ? "-32px" : "-22px";
-          marker.innerHTML = markerSvg(isSelected ? "white" : "#bbb");
-          marker.style.color = `hsla(290, 75%, 55%, ${
-            isSelected ? "80%" : "65%"
-          })`;
-          marker.style.width = isSelected ? `60px` : `40px`;
-          // @ts-ignore
-          marker.style["pointer-events"] = "auto";
-          marker.style.cursor = "pointer";
-          marker.onclick = (e) => {
-            setSelectingRegion(true);
-            setTimeout(() => {
-              setSelectingRegion(false);
-            }, 200);
-            e.stopPropagation();
-            e.preventDefault();
-            if (e.shiftKey) {
-              selectRegion(region as Region, false);
-              return;
-            }
-            selectRegion(region as Region, true);
-          };
-          return marker;
-        }}
-      />
+      <div className={`${globeReady ? "flex" : "hidden"}`}>
+        <ReactGlobe
+          onGlobeReady={handleGlobeReady}
+          waitForGlobeReady={true}
+          ref={globeEl}
+          width={width}
+          height={Math.min(height! * 1.25, width! * 1.25)}
+          showGraticules={false}
+          globeImageUrl="globe.jpg"
+          backgroundColor="#0000"
+          atmosphereColor={"hsl(47,60%,67%)"}
+          atmosphereAltitude={0.25}
+          onGlobeClick={() => {
+            if (selectingRegion) return;
+            onRegionSelected(undefined);
+          }}
+          arcsData={arcsData}
+          arcColor={() => "hsla(290,75%,55%,1%)"}
+          arcStroke={1.2}
+          arcDashLength={ARC_REL_LEN}
+          arcDashGap={10}
+          arcDashInitialGap={1}
+          arcDashAnimateTime={FLIGHT_TIME}
+          arcsTransitionDuration={0}
+          ringsData={ringsData}
+          ringColor={() => (t: number) => `rgba(198,54,226,1})`}
+          ringMaxRadius={RINGS_MAX_R}
+          ringPropagationSpeed={RING_PROPAGATION_SPEED}
+          ringRepeatPeriod={(FLIGHT_TIME * ARC_REL_LEN) / NUM_RINGS}
+          htmlElementsData={REGIONS}
+          htmlElement={(region: object) => {
+            const isSelected = region === selectedRegion;
+            const marker = document.createElement("div") as HTMLElement;
+            marker.style.marginTop = isSelected ? "-32px" : "-22px";
+            marker.innerHTML = markerSvg(isSelected ? "white" : "#bbb");
+            marker.style.color = `hsla(290, 75%, 55%, ${
+              isSelected ? "80%" : "65%"
+            })`;
+            marker.style.width = isSelected ? `60px` : `40px`;
+            // @ts-ignore
+            marker.style["pointer-events"] = "auto";
+            marker.style.cursor = "pointer";
+            marker.onclick = (e) => {
+              setSelectingRegion(true);
+              setTimeout(() => {
+                setSelectingRegion(false);
+              }, 200);
+              e.stopPropagation();
+              e.preventDefault();
+              if (e.shiftKey) {
+                selectRegion(region as Region, false);
+                return;
+              }
+              selectRegion(region as Region, true);
+            };
+            return marker;
+          }}
+        />
+      </div>
     </div>
   );
 }

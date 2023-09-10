@@ -18,6 +18,7 @@ const Home: NextPage = () => {
     undefined
   );
   const [lastRefresh, setLastRefresh] = useState(Date.now());
+  const [globeReady, setGlobeReady] = useState(false);
 
   return (
     <>
@@ -48,7 +49,22 @@ const Home: NextPage = () => {
           <Title />
           <div className="flex h-full min-h-0 w-full gap-4 px-4">
             <div className="flex h-full w-full max-w-[60%]">
+              {globeReady ? null : (
+                <div className="flex h-full w-full items-center justify-center gap-1">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src="/logo-dark.svg"
+                      width={28}
+                      className="animate-spin"
+                    />
+                    <span className="text-lg italic text-purple-300">
+                      Loading the globe...
+                    </span>
+                  </div>
+                </div>
+              )}
               <RegionsGlobe
+                onGlobeReady={() => setGlobeReady(true)}
                 selectedRegion={selectedRegion}
                 onRegionSelected={(region) => {
                   setLastRefresh(Date.now());
