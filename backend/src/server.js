@@ -6,10 +6,10 @@ const port = process.env.PORT || 4444;
 const app = express();
 app.use(cors())
 
-const europe = process.env.EUROPE_HOST || 'europe';
-const asia = process.env.ASIA_HOST || 'asia';
-const usWest = process.env.USWEST_HOST || 'us-west';
-const usEast = process.env.USEAST_HOST || 'us-east';
+const europe = process.env.EUROPE_HOST || 'reg-europe';
+const asia = process.env.ASIA_HOST || 'reg-asia';
+const usWest = process.env.USWEST_HOST || 'reg-us-west';
+const usEast = process.env.USEAST_HOST || 'reg-us-east';
 
 let regions = {
     'europe-west4': {
