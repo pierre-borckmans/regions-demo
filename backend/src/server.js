@@ -51,8 +51,8 @@ app.get("/ping", async (req, res) => {
             data[region].private.push(priv.time);
 
             return [region, {
-                public: Math.round(pub.time),
-                private: Math.round(priv.time),
+                public: pub.time,
+                private: priv.time,
             }]
 
         }
