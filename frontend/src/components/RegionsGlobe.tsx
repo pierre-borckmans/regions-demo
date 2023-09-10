@@ -182,7 +182,7 @@ export default function RegionsGlobe({
         }`}
       >
         <button
-          className="z-10 mb-[-120px] mt-[130px] w-32 cursor-pointer rounded border-2 text-white hover:scale-105 hover:text-gray-300"
+          className="z-10 mb-[-120px] ml-4 mt-[130px] w-32 cursor-pointer rounded border-2 text-white hover:scale-105 hover:text-gray-300"
           onClick={viewAllRegions}
         >
           Show all regions
