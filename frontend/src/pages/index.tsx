@@ -4,9 +4,7 @@ import Title from "~/components/Title";
 import dynamic from "next/dynamic";
 import { RegionsGlobeProps } from "~/components/RegionsGlobe";
 import React, { useState } from "react";
-import { Region, REGIONS } from "~/constants/regions";
-import Ping from "~/components/Ping";
-import { QueryClient } from "@tanstack/query-core";
+import { Region } from "~/constants/regions";
 import Info from "~/components/Info";
 
 export const RegionsGlobe = dynamic<RegionsGlobeProps>(
@@ -24,7 +22,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Regions playground</title>
+        <title>Railway World Trip</title>
         <link rel="icon" href="/international.png" />
       </Head>
 

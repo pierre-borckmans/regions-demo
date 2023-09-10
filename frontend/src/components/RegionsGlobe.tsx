@@ -207,7 +207,7 @@ export default function RegionsGlobe({
         arcDashAnimateTime={FLIGHT_TIME}
         arcsTransitionDuration={0}
         ringsData={ringsData}
-        ringColor={() => (t: number) => `rgba(198,54,226,${Math.sqrt(1 - t)})`}
+        ringColor={() => (t: number) => `rgba(198,54,226,1})`}
         ringMaxRadius={RINGS_MAX_R}
         ringPropagationSpeed={RING_PROPAGATION_SPEED}
         ringRepeatPeriod={(FLIGHT_TIME * ARC_REL_LEN) / NUM_RINGS}

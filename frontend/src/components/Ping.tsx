@@ -100,7 +100,7 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
                         className="animate-spin"
                       />
                       <span className="text-lg italic text-purple-300">
-                        Riding train across the globe...
+                        Riding trains across the globe...
                       </span>
                     </div>
                   </div>

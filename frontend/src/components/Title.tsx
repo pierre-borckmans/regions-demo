@@ -10,11 +10,9 @@ export default function Title() {
       </div>
 
       <h1 className="flex flex-col items-center gap-0 font-extrabold tracking-tight text-white">
-        <span className="text-xl text-[hsl(290,75%,55%)]">
-          Railway World Trip
-        </span>
+        <span className="text-2xl text-purple-400">Railway World Trip</span>
         <div className="relative flex">
-          <span className="absolute text-lg text-[hsl(280,100%,80%)] ">
+          <span className="absolute text-lg text-purple-300 ">
             Regions Playground
           </span>
           <span className="animate-pulse text-lg text-white/50 blur-[14px]">
