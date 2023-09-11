@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Region, REGIONS } from "~/constants/regions";
 import Image from "next/image";
 import { useState } from "react";
+import DirectionIcon from "~/components/DirectionIcon";
+import FlagWithDirection from "~/components/FlagWithDirection";
 
 type Props = {
   lastRefresh: number;
@@ -100,19 +102,36 @@ const Table = ({
   const field = isPublic ? "public" : "private";
   return (
     <div className="text-mono flex w-full max-w-[700px] flex-col gap-3 text-sm">
-      <div className="flex w-full">
-        <div className="flex min-w-[60px]"></div>
-        {REGIONS!.map((region) => (
-          <div className="flex w-full justify-center text-3xl">
-            {region.flag}
-          </div>
-        ))}
+      <div className="flex h-8 w-full items-center">
+        <div className="flex h-full w-full items-center">
+          <div className="flex min-w-[60px]"></div>
+          {REGIONS!.map((region) => (
+            <div
+              className="flex h-fit w-full justify-center text-3xl"
+              key={`header-${region.id}`}
+            >
+              <FlagWithDirection
+                flag={region.flag}
+                direction={region.direction}
+              />
+            </div>
+          ))}
+        </div>
       </div>
       {REGIONS!.map((region) => (
-        <div className="flex w-full items-center" key={`reg-${region.id}`}>
-          <div className="flex min-w-[60px] justify-center text-3xl">
-            {region.flag}
+        <div className="flex h-8 w-full items-center" key={`reg-${region.id}`}>
+          <div className="flex h-8 min-w-[60px] items-center justify-center text-3xl">
+            <div
+              className="flex h-fit items-center"
+              key={`header-${region.id}`}
+            >
+              <FlagWithDirection
+                flag={region.flag}
+                direction={region.direction}
+              />
+            </div>
           </div>
+
           {REGIONS!.map((otherRegion) => (
             <div
               className="flex w-full flex-col justify-center overflow-hidden px-4 font-mono text-xs lg:flex-row lg:justify-around lg:gap-2 xl:text-xs"

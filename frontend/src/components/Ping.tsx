@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Region, REGIONS } from "~/constants/regions";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import DirectionIcon from "~/components/DirectionIcon";
+import FlagWithDirection from "~/components/FlagWithDirection";
 
 type Ping = {
   public: number;
@@ -53,9 +55,17 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
         <>
           <div className="flex w-full justify-center ">
             <div className="flex items-center gap-1">
-              <div className="mt-1 text-3xl leading-6">
-                {selectedRegion.flag}
+              <div className="relative mr-2 text-3xl leading-3">
+                {selectedRegion.flag}{" "}
+                <div className="absolute bottom-[-8px] right-[-8px]">
+                  <DirectionIcon
+                    direction={selectedRegion.direction}
+                    width={12}
+                    height={12}
+                  />
+                </div>
               </div>
+
               <span className="text-lg lg:text-2xl">{selectedRegion.id}</span>
               <span className="text-sm text-gray-300 lg:text-lg">
                 ({selectedRegion.name},
@@ -111,9 +121,21 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
                         {REGIONS.map((region) => (
                           <div className="flex w-40 items-center justify-center gap-1">
                             <img src="/logo-dark.svg" width={20} />
-                            <span className="text-3xl leading-3">
-                              {region.flag}{" "}
-                            </span>
+                            <FlagWithDirection
+                              flag={region.flag}
+                              direction={region.direction}
+                            />
+                            {/*<div className="relative mr-3 text-3xl leading-3">*/}
+                            {/*  {region.flag}{" "}*/}
+                            {/*  <div className="absolute bottom-[-8px] right-[-8px]">*/}
+                            {/*    <DirectionIcon*/}
+                            {/*      direction={region.direction}*/}
+                            {/*      width={12}*/}
+                            {/*      height={12}*/}
+                            {/*    />*/}
+                            {/*  </div>*/}
+                            {/*</div>*/}
+
                             <span className="flex w-20 justify-end">
                               {pingResults[region.id].private} ms
                             </span>
@@ -125,9 +147,16 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
                         {REGIONS.map((region) => (
                           <div className="flex w-40 items-center justify-center gap-1">
                             <img src="/logo-dark.svg" width={20} />
-                            <span className="text-3xl leading-3">
+                            <div className="relative mr-3 text-3xl leading-3">
                               {region.flag}{" "}
-                            </span>
+                              <div className="absolute bottom-[-8px] right-[-8px]">
+                                <DirectionIcon
+                                  direction={region.direction}
+                                  width={12}
+                                  height={12}
+                                />
+                              </div>
+                            </div>
                             <span className="flex w-20 justify-end">
                               {pingResults[region.id].public} ms
                             </span>

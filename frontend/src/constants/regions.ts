@@ -11,6 +11,7 @@ export type Region = {
   lat: number;
   lng: number;
   flag: string;
+  direction: number;
   host: string;
 };
 
@@ -34,7 +35,8 @@ export const REGIONS: Region[] = [
     country: "Netherlands",
     lat: 53.448333,
     lng: 6.831111,
-    flag: "🇪🇺",
+    flag: "🇳🇱",
+    direction: -90,
     host:
       process.env.NODE_ENV === "development"
         ? `http://192.168.68.103:4444`
@@ -48,6 +50,7 @@ export const REGIONS: Region[] = [
     lat: 44.919284,
     lng: -123.317047,
     flag: "🇺🇸",
+    direction: -90,
     host:
       process.env.NODE_ENV === "development"
         ? `http://192.168.68.103:4444`
@@ -61,6 +64,7 @@ export const REGIONS: Region[] = [
     lat: 39.043757,
     lng: -77.487442,
     flag: "🇺🇸",
+    direction: 90,
     host:
       process.env.NODE_ENV === "development"
         ? `http://192.168.68.103:4444`
@@ -74,6 +78,7 @@ export const REGIONS: Region[] = [
     lat: 1.34039,
     lng: 103.708988,
     flag: "🇸🇬",
+    direction: 135,
     host:
       process.env.NODE_ENV === "development"
         ? `http://192.168.68.103:4444`
