@@ -145,7 +145,7 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
           </div>
         </>
       ) : (
-        <div className="flex h-full w-full flex-col items-center justify-center text-lg italic text-gray-300">
+        <div className="flex h-full w-full flex-col items-center justify-center text-sm italic text-gray-300 lg:text-lg">
           <span className="text-purple-300">
             Select a region on the map to start a world trip...
           </span>
