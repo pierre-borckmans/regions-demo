@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Region, REGIONS } from "~/constants/regions";
-import Image from "next/image";
 import { useState } from "react";
-import DirectionIcon from "~/components/DirectionIcon";
 import FlagWithDirection from "~/components/FlagWithDirection";
 
 type Props = {
@@ -39,12 +37,13 @@ export default function Stats({ lastRefresh, onRegionSelected }: Props) {
 
   return (
     <div
-      className={`flex h-[50%] min-h-0 w-full flex-col items-center justify-center gap-2 rounded-xl
-      border-2 bg-white/10
-      px-2 py-0.5 text-white shadow-2xl drop-shadow-2xl transition-all
+      className={`flex h-fit min-h-fit w-full flex-col items-center justify-start gap-2 overflow-y-scroll
+      rounded-xl border-2
+      bg-white/10 
+      px-2 pb-0 pt-2 text-white shadow-2xl drop-shadow-2xl transition-all
       duration-200 hover:scale-[1.03] hover:bg-white/20`}
     >
-      <span className="text-xl lg:text-2xl">Inter-region Trips Durations</span>
+      <span className="text-xl">Trips Durations Statistics</span>
       <span className="mt-[-10px] text-lg text-gray-300">
         <span className="text-emerald-400">min</span> |{" "}
         <span className="text-sky-200">avg</span> |{" "}

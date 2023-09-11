@@ -4,7 +4,7 @@ import Title from "~/components/Title";
 import dynamic from "next/dynamic";
 import { RegionsGlobeProps } from "~/components/RegionsGlobe";
 import React, { useState } from "react";
-import { Region, REGIONS } from "~/constants/regions";
+import { Region } from "~/constants/regions";
 import Info from "~/components/Info";
 
 export const RegionsGlobe = dynamic<RegionsGlobeProps>(
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main
-        className="flex min-h-screen w-full min-w-0 flex-col items-center px-2 pb-8 pt-4 lg:h-screen"
+        className="flex min-h-screen w-full min-w-0 flex-col items-center overflow-hidden px-2 pb-8 pt-4 lg:h-screen"
         style={{
           backgroundImage: `linear-gradient(
             140deg,
@@ -64,13 +64,15 @@ const Home: NextPage = () => {
                       className="animate-spin"
                     />
                     <span className="text-lg italic text-purple-300">
-                      Loading the globe...
+                      Loading the world... Yes the entire world!
                     </span>
                   </div>
                 </div>
               )}
               <RegionsGlobe
-                onGlobeReady={() => setGlobeReady(true)}
+                onGlobeReady={() => {
+                  setGlobeReady(true);
+                }}
                 selectedRegion={selectedRegion}
                 onRegionSelected={handleRegionSelected}
                 lastRefresh={lastRefresh}

@@ -52,8 +52,8 @@ export default function Ping({
 
   return (
     <div
-      className={`flex h-[260px] min-h-0 w-full flex-col justify-center gap-1 rounded-xl border-2
-      bg-white/10 px-2 text-white shadow-2xl drop-shadow-2xl
+      className={`flex h-fit min-h-fit w-full flex-col justify-center gap-1 rounded-xl border-2 bg-white/10
+      px-2 pb-3 pt-2 text-white shadow-2xl drop-shadow-2xl
       transition-all duration-200 hover:scale-[1.03] hover:bg-white/20`}
     >
       {selectedRegion ? (

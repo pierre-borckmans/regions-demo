@@ -181,7 +181,9 @@ export default function RegionsGlobe({
   return (
     <div
       ref={ref}
-      className="flex h-full w-full flex-col items-center justify-center"
+      className={`flex h-full flex-col items-center justify-center
+            ${globeReady ? "w-full" : "hidden w-0"}
+      `}
     >
       <div
         className={`${
