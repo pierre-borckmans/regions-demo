@@ -41,23 +41,23 @@ export default function Stats({ lastRefresh }: Props) {
       px-2 py-0.5 text-white shadow-2xl drop-shadow-2xl transition-all
       duration-200 hover:scale-[1.03] hover:bg-white/20`}
     >
-      {/*<div className="flex items-center gap-1">*/}
       <span className="text-2xl">Inter-region Trips Durations</span>
       <span className="mt-[-10px] text-lg text-gray-300">
-        min | avg | max (ms)
+        <span className="text-emerald-400">min</span> |{" "}
+        <span className="text-sky-200">avg</span> |{" "}
+        <span className="text-red-300">max</span> (ms)
       </span>
-      {/*</div>*/}
-      <div className="flex items-center justify-center gap-4 text-[rgb(224,102,255)]">
+      <div className="flex items-center justify-center gap-0 text-purple-300">
         <div
-          className={`flex cursor-pointer items-center justify-center gap-1 rounded px-2 py-1 text-lg
-          ${!isPublic && "border bg-purple-400 text-white"}`}
+          className={`flex cursor-pointer items-center justify-center gap-1 rounded-bl rounded-tl border px-2 py-1 text-sm
+          ${!isPublic && "bg-purple-400 text-white"}`}
           onClick={() => setPublic(false)}
         >
           <span>Via Private Network</span>
         </div>
         <div
-          className={`flex cursor-pointer items-center justify-center gap-1 rounded px-2 py-1 text-lg
-          ${isPublic && "border bg-purple-400 text-white"}`}
+          className={`flex cursor-pointer items-center justify-center gap-1 rounded-br rounded-tr border-b border-r border-t px-2 py-1 text-sm
+          ${isPublic && "bg-purple-400 text-white"}`}
           onClick={() => setPublic(true)}
         >
           <span>Via Internet</span>
@@ -99,22 +99,26 @@ const Table = ({
 }) => {
   const field = isPublic ? "public" : "private";
   return (
-    <div className="text-mono flex flex-col text-sm">
-      <div className="flex">
-        <div className="flex w-28"></div>
+    <div className="text-mono flex w-full max-w-[700px] flex-col text-sm">
+      <div className="flex w-full">
+        <div className="flex min-w-[60px]"></div>
         {REGIONS!.map((region) => (
-          <div className="flex w-36 justify-center text-3xl">{region.flag}</div>
+          <div className="flex w-full justify-center text-3xl">
+            {region.flag}
+          </div>
         ))}
       </div>
       {REGIONS!.map((region) => (
-        <div className="flex items-center" key={`reg-${region.id}`}>
-          <div className="flex w-28 justify-center text-3xl">{region.flag}</div>
+        <div className="flex w-full items-center" key={`reg-${region.id}`}>
+          <div className="flex min-w-[60px] justify-center text-3xl">
+            {region.flag}
+          </div>
           {REGIONS!.map((otherRegion) => (
             <div
-              className="flex w-36 justify-center gap-2 font-mono"
+              className="flex w-full justify-around gap-2 px-4 font-mono text-[6px] lg:text-sm"
               key={`otherreg-${otherRegion.id} `}
             >
-              <span className="border-r pr-2 text-emerald-400">
+              <span className="flex w-full justify-center border-r pr-2 text-emerald-400">
                 {stats &&
                 stats[region.id] &&
                 stats[region.id]![otherRegion.id] &&
@@ -124,7 +128,7 @@ const Table = ({
                     )}`
                   : "-"}
               </span>
-              <span className="border-r pr-2 text-sky-200">
+              <span className="flex w-full justify-center border-r pr-2 text-sky-200">
                 {stats &&
                 stats[region.id] &&
                 stats[region.id]![otherRegion.id] &&
@@ -134,7 +138,7 @@ const Table = ({
                     )}`
                   : "-"}
               </span>
-              <span className="text-red-300">
+              <span className="flex w-full justify-center text-red-300">
                 {stats &&
                 stats[region.id] &&
                 stats[region.id]![otherRegion.id] &&

@@ -28,7 +28,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main
-        className="flex h-screen min-h-0 w-full min-w-0 flex-col items-center py-4 pr-4"
+        className="flex min-h-0 min-h-screen w-full min-w-0 flex-col items-center px-2 py-4 lg:h-screen"
         style={{
           backgroundImage: `linear-gradient(
             140deg,
@@ -47,8 +47,9 @@ const Home: NextPage = () => {
       >
         <div className="flex h-full w-full flex-col items-center justify-start gap-2 gap-y-6">
           <Title />
-          <div className="flex h-full min-h-0 w-full gap-4 px-4">
-            <div className="flex h-full w-full max-w-[calc(100vw_-_770px)]">
+
+          <div className="flex h-full min-h-0 w-full flex-wrap justify-around gap-4 px-4">
+            <div className="flex h-[340px] w-full max-w-[100%] lg:h-full lg:max-w-[50%]">
               {globeReady ? null : (
                 <div className="flex h-full w-full items-center justify-center gap-1">
                   <div className="flex items-center gap-3">
@@ -72,7 +73,9 @@ const Home: NextPage = () => {
                 }}
               />
             </div>
-            <Info selectedRegion={selectedRegion} lastRefresh={lastRefresh} />
+            <div className="flex h-full w-full max-w-[100%] lg:max-w-[48%]">
+              <Info selectedRegion={selectedRegion} lastRefresh={lastRefresh} />
+            </div>
           </div>
         </div>
       </main>

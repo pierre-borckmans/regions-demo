@@ -8,7 +8,7 @@ type Props = {
 };
 export default function Info({ selectedRegion, lastRefresh }: Props) {
   return (
-    <div className="flex h-full w-full flex-col justify-around gap-2">
+    <div className="flex h-full w-full flex-col gap-8 lg:justify-center">
       <Ping selectedRegion={selectedRegion} lastRefresh={lastRefresh} />
       <Stats lastRefresh={lastRefresh} />
     </div>

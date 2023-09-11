@@ -53,23 +53,23 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
         <>
           <div className="flex w-full justify-center ">
             <div className="flex items-center gap-1">
-              <div className="mt-1 text-2xl leading-6">
+              <div className="mt-1 text-3xl leading-6">
                 {selectedRegion.flag}
               </div>
-              <span className="text-2xl">{selectedRegion.id}</span>
-              <span className="text-lg text-gray-300">
+              <span className="text-lg lg:text-2xl">{selectedRegion.id}</span>
+              <span className="text-sm text-gray-300 lg:text-lg">
                 ({selectedRegion.name},
               </span>
-              <span className="text-lg text-gray-300">
+              <span className="text-sm text-gray-300 lg:text-lg">
                 {selectedRegion.country})
               </span>
             </div>
           </div>
           <div className="flex gap-1">
-            <div className="flex w-full flex-col items-center justify-center gap-2 text-[rgb(204,102,255)]">
+            <div className="flex w-full flex-col items-center justify-center gap-2 text-sm text-[rgb(204,102,255)] lg:text-lg">
               {/*Private Network / Internet*/}
               <div className="flex w-full items-center">
-                <div className="flex w-full items-center justify-center gap-1 text-lg">
+                <div className="flex w-full items-center justify-center gap-1">
                   <Image
                     src="private-networking.svg"
                     alt="private networking"
@@ -78,7 +78,7 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
                   />
                   <span>Via Private Network</span>
                 </div>
-                <div className="flex w-full items-center justify-center gap-1 text-lg">
+                <div className="flex w-full items-center justify-center gap-1">
                   <img
                     src="/globe.svg"
                     alt="internet"
@@ -97,7 +97,7 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
                       <img
                         src="/logo-dark.svg"
                         width={28}
-                        className="animate-spin"
+                        className="animate-bounce"
                       />
                       <span className="text-lg italic text-purple-300">
                         Riding trains across the globe...

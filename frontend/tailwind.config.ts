@@ -23,7 +23,7 @@ export default {
         shake: "shake 200ms ease-out",
       },
       screens: {
-        xl: "1170px",
+        lg: "1000px",
       },
     },
   },

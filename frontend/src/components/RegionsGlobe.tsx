@@ -174,15 +174,17 @@ export default function RegionsGlobe({
   return (
     <div
       ref={ref}
-      className="flex h-full w-full flex-col  items-center justify-center"
+      className="flex h-full w-full flex-col items-center justify-center"
     >
       <div
         className={`${
-          globeReady ? "space-around flex flex-col items-start" : "hidden"
+          globeReady
+            ? "space-around relative flex flex-col items-start"
+            : "hidden"
         }`}
       >
         <button
-          className="z-10 mb-[-120px] ml-4 mt-[130px] w-32 cursor-pointer rounded border-2 text-white transition-all hover:scale-105 hover:text-gray-300 active:text-pink-500"
+          className="absolute top-8 z-10 ml-4 w-32 cursor-pointer rounded border-2 text-white transition-all hover:scale-105 hover:text-gray-300 active:text-pink-500 lg:top-0 lg:mb-[-120px] lg:mt-[130px]"
           onClick={viewAllRegions}
         >
           Show all regions
