@@ -158,6 +158,7 @@ const Table = ({
               className="flex h-full w-full cursor-cell flex-col items-center justify-center overflow-hidden rounded px-4 font-mono text-xs hover:bg-gray-300/30 lg:flex-row lg:justify-around lg:gap-2 xl:text-xs"
               key={`otherreg-${otherRegion.id} `}
               onMouseEnter={() => setHovered({ row, col })}
+              onMouseLeave={() => setHovered(undefined)}
             >
               <span className="flex w-full justify-center leading-3 text-emerald-400">
                 {stats &&
