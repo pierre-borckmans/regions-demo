@@ -28,7 +28,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main
-        className="flex min-h-0 min-h-screen w-full min-w-0 flex-col items-center px-2 py-4 lg:h-screen"
+        className="flex min-h-screen w-full min-w-0 flex-col items-center px-2 pb-8 pt-4 lg:h-screen"
         style={{
           backgroundImage: `linear-gradient(
             140deg,
