@@ -152,6 +152,7 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
           <span className="text-purple-200">
             Let's see how fast we can do it!
           </span>
+          <span className="mt-2 text-sm">(double-tap on mobile)</span>
           <span className="mt-2 text-sm">
             (shift+click to keep current globe orientation)
           </span>

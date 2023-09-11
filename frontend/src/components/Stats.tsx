@@ -41,7 +41,7 @@ export default function Stats({ lastRefresh }: Props) {
       px-2 py-0.5 text-white shadow-2xl drop-shadow-2xl transition-all
       duration-200 hover:scale-[1.03] hover:bg-white/20`}
     >
-      <span className="text-2xl">Inter-region Trips Durations</span>
+      <span className="text-xl lg:text-2xl">Inter-region Trips Durations</span>
       <span className="mt-[-10px] text-lg text-gray-300">
         <span className="text-emerald-400">min</span> |{" "}
         <span className="text-sky-200">avg</span> |{" "}
@@ -74,7 +74,7 @@ export default function Stats({ lastRefresh }: Props) {
           }}
         />
       </div>
-      <span className="mt-3 text-xs italic text-purple-200">
+      <span className="mb-3 text-xs italic text-purple-200">
         Our trains are always on time!
       </span>
     </div>
@@ -99,7 +99,7 @@ const Table = ({
 }) => {
   const field = isPublic ? "public" : "private";
   return (
-    <div className="text-mono flex w-full max-w-[700px] flex-col text-sm">
+    <div className="text-mono flex w-full max-w-[700px] flex-col gap-3 text-sm">
       <div className="flex w-full">
         <div className="flex min-w-[60px]"></div>
         {REGIONS!.map((region) => (
@@ -115,10 +115,10 @@ const Table = ({
           </div>
           {REGIONS!.map((otherRegion) => (
             <div
-              className="flex w-full justify-around gap-2 px-4 font-mono text-[6px] lg:text-sm"
+              className="flex w-full flex-col justify-center overflow-hidden px-4 font-mono text-xs lg:flex-row lg:justify-around lg:gap-2 xl:text-xs"
               key={`otherreg-${otherRegion.id} `}
             >
-              <span className="flex w-full justify-center border-r pr-2 text-emerald-400">
+              <span className="flex w-full justify-center leading-3 text-emerald-400">
                 {stats &&
                 stats[region.id] &&
                 stats[region.id]![otherRegion.id] &&
@@ -128,7 +128,7 @@ const Table = ({
                     )}`
                   : "-"}
               </span>
-              <span className="flex w-full justify-center border-r pr-2 text-sky-200">
+              <span className="flex w-full justify-center leading-3 text-sky-200">
                 {stats &&
                 stats[region.id] &&
                 stats[region.id]![otherRegion.id] &&
@@ -138,7 +138,7 @@ const Table = ({
                     )}`
                   : "-"}
               </span>
-              <span className="flex w-full justify-center text-red-300">
+              <span className="flex w-full justify-center leading-3 text-red-300">
                 {stats &&
                 stats[region.id] &&
                 stats[region.id]![otherRegion.id] &&
