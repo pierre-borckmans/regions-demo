@@ -11,10 +11,15 @@ type Ping = {
 };
 
 type Props = {
+  onRegionSelected: (region: Region) => void;
   selectedRegion?: Region;
   lastRefresh: number;
 };
-export default function Ping({ selectedRegion, lastRefresh }: Props) {
+export default function Ping({
+  selectedRegion,
+  lastRefresh,
+  onRegionSelected,
+}: Props) {
   const [loading, setLoading] = useState(true);
   const pingRegions = async () => {
     const r = (await fetch(`${selectedRegion!.host}/pingAll`)).json();
@@ -119,23 +124,17 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
                     <div className="flex w-full items-center justify-center font-mono text-lg">
                       <div className="flex w-full flex-col items-center justify-center gap-0.5">
                         {REGIONS.map((region) => (
-                          <div className="flex w-40 items-center justify-center gap-1">
+                          <div
+                            className="flex w-40 cursor-pointer items-center justify-center gap-1"
+                            onClick={() => {
+                              onRegionSelected(region);
+                            }}
+                          >
                             <img src="/logo-dark.svg" width={20} />
                             <FlagWithDirection
                               flag={region.flag}
                               direction={region.direction}
                             />
-                            {/*<div className="relative mr-3 text-3xl leading-3">*/}
-                            {/*  {region.flag}{" "}*/}
-                            {/*  <div className="absolute bottom-[-8px] right-[-8px]">*/}
-                            {/*    <DirectionIcon*/}
-                            {/*      direction={region.direction}*/}
-                            {/*      width={12}*/}
-                            {/*      height={12}*/}
-                            {/*    />*/}
-                            {/*  </div>*/}
-                            {/*</div>*/}
-
                             <span className="flex w-20 justify-end">
                               {pingResults[region.id].private} ms
                             </span>
@@ -145,7 +144,12 @@ export default function Ping({ selectedRegion, lastRefresh }: Props) {
 
                       <div className="flex w-full flex-col items-center justify-center gap-0.5">
                         {REGIONS.map((region) => (
-                          <div className="flex w-40 items-center justify-center gap-1">
+                          <div
+                            className="flex w-40 cursor-pointer items-center justify-center gap-1"
+                            onClick={() => {
+                              onRegionSelected(region);
+                            }}
+                          >
                             <img src="/logo-dark.svg" width={20} />
                             <div className="relative mr-3 text-3xl leading-3">
                               {region.flag}{" "}

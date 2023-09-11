@@ -33,11 +33,13 @@ export type RegionsGlobeProps = {
   onGlobeReady: () => void;
   onRegionSelected: (region?: Region) => void;
   selectedRegion?: Region;
+  lastRefresh: number;
 };
 export default function RegionsGlobe({
   selectedRegion,
   onRegionSelected,
   onGlobeReady,
+  lastRefresh,
 }: RegionsGlobeProps) {
   const { ref, width, height } = useResizeObserver<HTMLDivElement>();
   const globeEl = useRef<
@@ -65,8 +67,6 @@ export default function RegionsGlobe({
     globeEl.current!.pointOfView({ lat, lng });
   }, []);
 
-  useEffect(() => {}, [width, height]);
-
   const [arcsData, setArcsData] = useState<
     { startLat: number; startLng: number; endLat: number; endLng: number }[]
   >([]);
@@ -75,9 +75,26 @@ export default function RegionsGlobe({
     []
   );
 
-  const [selectingRegion, setSelectingRegion] = useState(false);
+  const [selectingRegionInProgress, setSelectingRegionInProgress] =
+    useState(false);
 
   const [globeReady, setGlobeReady] = useState(false);
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    if (selectedRegion) {
+      setTimeout(
+        () => {
+          emitArcsFromRegionToAllOthers(selectedRegion);
+        },
+        animate && selectedRegion !== selectedRegion ? 1000 : 0
+      );
+      if (animate) {
+        const { lat, lng } = selectedRegion as Region;
+        globeEl.current!.pointOfView({ lat, lng }, 1000);
+      }
+    }
+  }, [selectedRegion, lastRefresh]);
 
   const viewAllRegions = () => {
     const lat = 69.338777;
@@ -91,7 +108,7 @@ export default function RegionsGlobe({
       const { lat, lng } = REGIONS[Math.round(Math.random() * 3)]!;
       globeEl.current!.pointOfView({ lat, lng });
       setGlobeReady(true);
-    }, 500);
+    }, 0);
   };
 
   const emitArcFromRegionToAnother = (region: Region, otherRegion: Region) => {
@@ -157,18 +174,8 @@ export default function RegionsGlobe({
     });
   };
 
-  const selectRegion = (region: Region, animate: boolean) => {
+  const selectRegion = (region: Region) => {
     onRegionSelected(region);
-    setTimeout(
-      () => {
-        emitArcsFromRegionToAllOthers(region);
-      },
-      animate && region !== selectedRegion ? 1000 : 0
-    );
-    if (animate) {
-      const { lat, lng } = region as Region;
-      globeEl.current!.pointOfView({ lat, lng }, 1000);
-    }
   };
 
   return (
@@ -180,7 +187,7 @@ export default function RegionsGlobe({
         className={`${
           globeReady
             ? "space-around relative flex flex-col items-start"
-            : "hidden"
+            : "hidden w-0"
         }`}
       >
         <button
@@ -193,27 +200,28 @@ export default function RegionsGlobe({
           onGlobeReady={handleGlobeReady}
           waitForGlobeReady={true}
           ref={globeEl}
-          width={width}
-          height={Math.min(height! * 1.25, width! * 1.25)}
+          width={globeReady ? width : 0}
+          height={globeReady ? Math.min(height! * 1.25, width! * 1.25) : 0}
           showGraticules={false}
           globeImageUrl="globe.jpg"
           backgroundColor="#0000"
           atmosphereColor={"hsl(47,60%,67%)"}
           atmosphereAltitude={0.25}
           onGlobeClick={() => {
-            if (selectingRegion) return;
+            if (selectingRegionInProgress) return;
             onRegionSelected(undefined);
           }}
           arcsData={arcsData}
-          arcColor={() => "hsla(290,75%,55%,1%)"}
-          arcStroke={1.2}
+          arcColor={() => () => `rgba(198,54,226,1})`}
+          arcStroke={1.5}
+          arcAltitudeAutoScale={0.4}
           arcDashLength={ARC_REL_LEN}
           arcDashGap={10}
           arcDashInitialGap={1}
           arcDashAnimateTime={FLIGHT_TIME}
           arcsTransitionDuration={0}
           ringsData={ringsData}
-          ringColor={() => (t: number) => `rgba(198,54,226,1})`}
+          ringColor={() => () => `rgba(198,54,226,0.0})`}
           ringMaxRadius={RINGS_MAX_R}
           ringPropagationSpeed={RING_PROPAGATION_SPEED}
           ringRepeatPeriod={(FLIGHT_TIME * ARC_REL_LEN) / NUM_RINGS}
@@ -231,17 +239,22 @@ export default function RegionsGlobe({
             marker.style["pointer-events"] = "auto";
             marker.style.cursor = "pointer";
             marker.onclick = (e) => {
-              setSelectingRegion(true);
+              setSelectingRegionInProgress(true);
               setTimeout(() => {
-                setSelectingRegion(false);
+                setSelectingRegionInProgress(false);
               }, 200);
               e.stopPropagation();
               e.preventDefault();
               if (e.shiftKey) {
-                selectRegion(region as Region, false);
+                setAnimate(false);
+                selectRegion(region as Region);
                 return;
               }
-              selectRegion(region as Region, true);
+              setAnimate(true);
+              selectRegion(region as Region);
+              setTimeout(() => {
+                setAnimate(false);
+              }, 20);
             };
             return marker;
           }}

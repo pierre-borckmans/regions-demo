@@ -20,6 +20,11 @@ const Home: NextPage = () => {
   const [lastRefresh, setLastRefresh] = useState(Date.now());
   const [globeReady, setGlobeReady] = useState(false);
 
+  const handleRegionSelected = (region?: Region) => {
+    setLastRefresh(Date.now());
+    setSelectedRegion(region);
+  };
+
   return (
     <>
       <Head>
@@ -67,14 +72,16 @@ const Home: NextPage = () => {
               <RegionsGlobe
                 onGlobeReady={() => setGlobeReady(true)}
                 selectedRegion={selectedRegion}
-                onRegionSelected={(region) => {
-                  setLastRefresh(Date.now());
-                  setSelectedRegion(region);
-                }}
+                onRegionSelected={handleRegionSelected}
+                lastRefresh={lastRefresh}
               />
             </div>
             <div className="flex h-full w-full max-w-[100%] lg:max-w-[48%]">
-              <Info selectedRegion={selectedRegion} lastRefresh={lastRefresh} />
+              <Info
+                selectedRegion={selectedRegion}
+                lastRefresh={lastRefresh}
+                onRegionSelected={handleRegionSelected}
+              />
             </div>
           </div>
         </div>

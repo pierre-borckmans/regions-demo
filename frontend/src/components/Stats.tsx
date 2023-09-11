@@ -7,8 +7,9 @@ import FlagWithDirection from "~/components/FlagWithDirection";
 
 type Props = {
   lastRefresh: number;
+  onRegionSelected: (region: Region) => void;
 };
-export default function Stats({ lastRefresh }: Props) {
+export default function Stats({ lastRefresh, onRegionSelected }: Props) {
   const [isPublic, setPublic] = useState(false);
   const getStats = async (region: Region) => {
     const r = (await fetch(`${region!.host}/stats`)).json();
@@ -68,6 +69,7 @@ export default function Stats({ lastRefresh }: Props) {
       <div className="flex w-full justify-center gap-1 text-3xl">
         <Table
           isPublic={isPublic}
+          onRegionSelected={onRegionSelected}
           stats={{
             "europe-west4": statsEurope,
             "asia-southeast1": statsAsia,
@@ -86,7 +88,9 @@ export default function Stats({ lastRefresh }: Props) {
 const Table = ({
   isPublic,
   stats,
+  onRegionSelected,
 }: {
+  onRegionSelected: (region: Region) => void;
   isPublic: boolean;
   stats: Record<
     string,
@@ -100,42 +104,60 @@ const Table = ({
   >;
 }) => {
   const field = isPublic ? "public" : "private";
+  const [hovered, setHovered] = useState<
+    { col: number; row: number } | undefined
+  >(undefined);
   return (
     <div className="text-mono flex w-full max-w-[700px] flex-col gap-3 text-sm">
       <div className="flex h-8 w-full items-center">
         <div className="flex h-full w-full items-center">
           <div className="flex min-w-[60px]"></div>
-          {REGIONS!.map((region) => (
+          {REGIONS!.map((region, col) => (
             <div
-              className="flex h-fit w-full justify-center text-3xl"
-              key={`header-${region.id}`}
+              className={`flex h-9 w-full items-center justify-center rounded ${
+                col === hovered?.col ? "bg-gray-300/30" : ""
+              }`}
             >
-              <FlagWithDirection
-                flag={region.flag}
-                direction={region.direction}
-              />
+              <div
+                className={`flex h-fit w-full cursor-pointer justify-center text-3xl `}
+                key={`header-${region.id}`}
+                onClick={() => onRegionSelected(region)}
+              >
+                <FlagWithDirection
+                  flag={region.flag}
+                  direction={region.direction}
+                />
+              </div>
             </div>
           ))}
         </div>
       </div>
-      {REGIONS!.map((region) => (
-        <div className="flex h-8 w-full items-center" key={`reg-${region.id}`}>
-          <div className="flex h-8 min-w-[60px] items-center justify-center text-3xl">
+      {REGIONS!.map((region, row) => (
+        <div className="flex h-9 w-full items-center" key={`reg-${region.id}`}>
+          <div className="flex h-9 min-w-[60px] items-center justify-center text-3xl">
             <div
-              className="flex h-fit items-center"
-              key={`header-${region.id}`}
+              className={`flex h-9 w-full items-center justify-center rounded ${
+                row === hovered?.row ? "bg-gray-300/30" : ""
+              }`}
             >
-              <FlagWithDirection
-                flag={region.flag}
-                direction={region.direction}
-              />
+              <div
+                className="flex h-fit cursor-pointer items-center"
+                key={`header-${region.id}`}
+                onClick={() => onRegionSelected(region)}
+              >
+                <FlagWithDirection
+                  flag={region.flag}
+                  direction={region.direction}
+                />
+              </div>
             </div>
           </div>
 
-          {REGIONS!.map((otherRegion) => (
+          {REGIONS!.map((otherRegion, col) => (
             <div
-              className="flex w-full flex-col justify-center overflow-hidden px-4 font-mono text-xs lg:flex-row lg:justify-around lg:gap-2 xl:text-xs"
+              className="flex h-full w-full cursor-cell flex-col items-center justify-center overflow-hidden rounded px-4 font-mono text-xs hover:bg-gray-300/30 lg:flex-row lg:justify-around lg:gap-2 xl:text-xs"
               key={`otherreg-${otherRegion.id} `}
+              onMouseEnter={() => setHovered({ row, col })}
             >
               <span className="flex w-full justify-center leading-3 text-emerald-400">
                 {stats &&
