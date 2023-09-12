@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import { RegionsGlobeProps } from "~/components/RegionsGlobe";
 import React, { useState } from "react";
 import { Region } from "~/constants/regions";
-import Info from "~/components/Info";
 
 export const RegionsGlobe = dynamic<RegionsGlobeProps>(
   () => import("../components/RegionsGlobe"),
@@ -54,7 +53,7 @@ const Home: NextPage = () => {
           <Title />
 
           <div className="flex h-full min-h-0 w-full flex-wrap justify-around gap-4 px-4">
-            <div className="flex h-[340px] w-full max-w-[100%] lg:h-full lg:max-w-[50%]">
+            <div className="flex h-full w-full max-w-[100%] lg:max-w-[100%]">
               {globeReady ? null : (
                 <div className="flex h-full w-full items-center justify-center gap-1">
                   <div className="flex items-center gap-3">
@@ -76,13 +75,6 @@ const Home: NextPage = () => {
                 selectedRegion={selectedRegion}
                 onRegionSelected={handleRegionSelected}
                 lastRefresh={lastRefresh}
-              />
-            </div>
-            <div className="flex h-full w-full max-w-[100%] lg:max-w-[48%]">
-              <Info
-                selectedRegion={selectedRegion}
-                lastRefresh={lastRefresh}
-                onRegionSelected={handleRegionSelected}
               />
             </div>
           </div>

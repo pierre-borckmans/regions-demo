@@ -1,7 +1,8 @@
 import { GlobeProps } from "react-globe.gl";
 import React, { useEffect, useRef, useState } from "react";
-import { Region, REGIONS } from "~/constants/regions";
+import { Region } from "~/constants/regions";
 import useResizeObserver from "use-resize-observer";
+import { useQuery } from "@tanstack/react-query";
 
 let ReactGlobe: React.FC<GlobeProps & { ref: any }> = () => null;
 
@@ -61,11 +62,28 @@ export default function RegionsGlobe({
     globeEl.current.controls().enableZoom = false;
   }, [globeEl.current]);
 
-  useEffect(() => {
-    if (!selectedRegion) return;
-    const { lat, lng } = selectedRegion;
-    globeEl.current!.pointOfView({ lat, lng });
-  }, []);
+  // useEffect(() => {
+  //   if (!selectedRegion) return;
+  //   const { lat, lng } = selectedRegion;
+  //   globeEl.current!.pointOfView({ lat, lng });
+  // }, []);
+
+  const pingApp = async () => {
+    const r = (
+      await fetch(`https://svc-us-west.regions.rlwy.xyz/collect.json`)
+    ).json();
+    return r;
+  };
+
+  const {
+    data: pingResults,
+    isLoading,
+    isSuccess,
+  } = useQuery({
+    queryKey: ["ping", selectedRegion?.id, lastRefresh],
+    cacheTime: 0,
+    queryFn: pingApp,
+  });
 
   const [arcsData, setArcsData] = useState<
     { startLat: number; startLng: number; endLat: number; endLng: number }[]
@@ -75,26 +93,23 @@ export default function RegionsGlobe({
     []
   );
 
-  const [selectingRegionInProgress, setSelectingRegionInProgress] =
-    useState(false);
-
   const [globeReady, setGlobeReady] = useState(false);
   const [animate, setAnimate] = useState(false);
 
-  useEffect(() => {
-    if (selectedRegion) {
-      setTimeout(
-        () => {
-          emitArcsFromRegionToAllOthers(selectedRegion);
-        },
-        animate && selectedRegion !== selectedRegion ? 1000 : 0
-      );
-      if (animate) {
-        const { lat, lng } = selectedRegion as Region;
-        globeEl.current!.pointOfView({ lat, lng }, 1000);
-      }
-    }
-  }, [selectedRegion, lastRefresh]);
+  // useEffect(() => {
+  //   if (selectedRegion) {
+  //     setTimeout(
+  //       () => {
+  //         // emitArcsFromRegionToAllOthers(selectedRegion);
+  //       },
+  //       animate && selectedRegion !== selectedRegion ? 1000 : 0
+  //     );
+  //     if (animate) {
+  //       const { lat, lng } = selectedRegion as Region;
+  //       globeEl.current!.pointOfView({ lat, lng }, 1000);
+  //     }
+  //   }
+  // }, [selectedRegion, lastRefresh]);
 
   const viewAllRegions = () => {
     const lat = 69.338777;
@@ -104,80 +119,85 @@ export default function RegionsGlobe({
 
   const handleGlobeReady = () => {
     onGlobeReady();
-    setTimeout(() => {
-      const { lat, lng } = REGIONS[Math.round(Math.random() * 3)]!;
-      globeEl.current!.pointOfView({ lat, lng });
-      setGlobeReady(true);
-    }, 0);
+    // setTimeout(() => {
+    //   const { lat, lng } = pingResults.[Math.round(Math.random() * 3)]!;
+    //   globeEl.current!.pointOfView({ lat, lng });
+    setGlobeReady(true);
+    // }, 0);
   };
 
-  const emitArcFromRegionToAnother = (region: Region, otherRegion: Region) => {
-    const { lat: startLat, lng: startLng } = region;
-    const { lat: endLat, lng: endLng } = otherRegion;
+  // const emitArcFromRegionToAnother = (region: Region, otherRegion: Region) => {
+  //   const { lat: startLat, lng: startLng } = region;
+  //   const { lat: endLat, lng: endLng } = otherRegion;
+  //
+  //   const arc = { startLat, startLng, endLat, endLng };
+  //   const backArc = {
+  //     endLat: startLat,
+  //     endLng: startLng,
+  //     startLat: endLat,
+  //     startLng: endLng,
+  //   };
+  //   // forward arc
+  //   setArcsData((curArcsData) => [...curArcsData, arc]);
+  //   setTimeout(() => {
+  //     // backward arc
+  //     setArcsData((curArcsData) => [
+  //       ...curArcsData.filter((d) => d !== arc),
+  //       backArc,
+  //     ]);
+  //     setTimeout(
+  //       () =>
+  //         setArcsData((curArcsData) =>
+  //           curArcsData.filter((d) => d !== backArc)
+  //         ),
+  //       FLIGHT_TIME * 1.5
+  //     );
+  //   }, FLIGHT_TIME * 1.5);
+  //
+  //   const srcRing = { lat: startLat, lng: startLng };
+  //   // add and remove target rings
+  //   setTimeout(() => {
+  //     const targetRing = { lat: endLat, lng: endLng };
+  //     setRingsData((curRingsData) => [...curRingsData, targetRing]);
+  //     setTimeout(
+  //       () =>
+  //         setRingsData((curRingsData) =>
+  //           curRingsData.filter((r) => r !== targetRing)
+  //         ),
+  //       FLIGHT_TIME * ARC_REL_LEN
+  //     );
+  //   }, FLIGHT_TIME * 0.75);
+  //
+  //   // add and remove src rings
+  //   setTimeout(() => {
+  //     setRingsData((curRingsData) => [...curRingsData, srcRing]);
+  //     setTimeout(
+  //       () =>
+  //         setRingsData((curRingsData) =>
+  //           curRingsData.filter((r) => r !== srcRing)
+  //         ),
+  //       FLIGHT_TIME * ARC_REL_LEN
+  //     );
+  //   }, FLIGHT_TIME * 2.25);
+  // };
+  //
+  // const emitArcsFromRegionToAllOthers = (region: Region) => {
+  //   const otherRegions = REGIONS.filter((r) => r.id !== region.id);
+  //   // emitArcFromRegionToSelf(region);
+  //   otherRegions.forEach((otherRegion) => {
+  //     emitArcFromRegionToAnother(region, otherRegion);
+  //   });
+  // };
 
-    const arc = { startLat, startLng, endLat, endLng };
-    const backArc = {
-      endLat: startLat,
-      endLng: startLng,
-      startLat: endLat,
-      startLng: endLng,
-    };
-    // forward arc
-    setArcsData((curArcsData) => [...curArcsData, arc]);
-    setTimeout(() => {
-      // backward arc
-      setArcsData((curArcsData) => [
-        ...curArcsData.filter((d) => d !== arc),
-        backArc,
-      ]);
-      setTimeout(
-        () =>
-          setArcsData((curArcsData) =>
-            curArcsData.filter((d) => d !== backArc)
-          ),
-        FLIGHT_TIME * 1.5
-      );
-    }, FLIGHT_TIME * 1.5);
-
-    const srcRing = { lat: startLat, lng: startLng };
-    // add and remove target rings
-    setTimeout(() => {
-      const targetRing = { lat: endLat, lng: endLng };
-      setRingsData((curRingsData) => [...curRingsData, targetRing]);
-      setTimeout(
-        () =>
-          setRingsData((curRingsData) =>
-            curRingsData.filter((r) => r !== targetRing)
-          ),
-        FLIGHT_TIME * ARC_REL_LEN
-      );
-    }, FLIGHT_TIME * 0.75);
-
-    // add and remove src rings
-    setTimeout(() => {
-      setRingsData((curRingsData) => [...curRingsData, srcRing]);
-      setTimeout(
-        () =>
-          setRingsData((curRingsData) =>
-            curRingsData.filter((r) => r !== srcRing)
-          ),
-        FLIGHT_TIME * ARC_REL_LEN
-      );
-    }, FLIGHT_TIME * 2.25);
-  };
-
-  const emitArcsFromRegionToAllOthers = (region: Region) => {
-    const otherRegions = REGIONS.filter((r) => r.id !== region.id);
-    // emitArcFromRegionToSelf(region);
-    otherRegions.forEach((otherRegion) => {
-      emitArcFromRegionToAnother(region, otherRegion);
-    });
-  };
-
-  const selectRegion = (region: Region) => {
-    onRegionSelected(region);
-  };
-
+  const peers: Region[] =
+    pingResults?.OtherPeers.map((p: any) => ({
+      ...p.Region,
+      Type: "Peer",
+    })) || [];
+  const self: Region = { ...pingResults?.Self.Region, Type: "Self" };
+  const edge: Region = { ...pingResults?.EdgeRegion, Type: "Edge" };
+  const user: Region = { ...pingResults?.UserRegion, Type: "User" };
+  const allRegions = [...peers, self, edge, user];
   return (
     <div
       ref={ref}
@@ -209,10 +229,7 @@ export default function RegionsGlobe({
           backgroundColor="#0000"
           atmosphereColor={"hsl(47,60%,67%)"}
           atmosphereAltitude={0.25}
-          onGlobeClick={() => {
-            if (selectingRegionInProgress) return;
-            onRegionSelected(undefined);
-          }}
+          onGlobeClick={() => {}}
           arcsData={arcsData}
           arcColor={() => () => `rgba(198,54,226,1})`}
           arcStroke={1.5}
@@ -227,37 +244,33 @@ export default function RegionsGlobe({
           ringMaxRadius={RINGS_MAX_R}
           ringPropagationSpeed={RING_PROPAGATION_SPEED}
           ringRepeatPeriod={(FLIGHT_TIME * ARC_REL_LEN) / NUM_RINGS}
-          htmlElementsData={REGIONS}
-          htmlElement={(region: object) => {
-            const isSelected = region === selectedRegion;
+          htmlElementsData={allRegions}
+          htmlElement={(region: Region) => {
+            console.log(region);
             const marker = document.createElement("div") as HTMLElement;
-            marker.style.marginTop = isSelected ? "-32px" : "-22px";
-            marker.innerHTML = markerSvg(isSelected ? "white" : "#bbb");
-            marker.style.color = `hsla(290, 75%, 55%, ${
-              isSelected ? "80%" : "65%"
-            })`;
-            marker.style.width = isSelected ? `60px` : `40px`;
+            marker.style.marginTop = "-22px";
+            marker.innerHTML = markerSvg("white");
+            switch (region.Type) {
+              case "Edge":
+                marker.style.color = `rgb(255, 0, 0)`;
+                break;
+              case "Peer":
+                marker.style.color = `rgb(0, 255, 0)`;
+                break;
+              case "User":
+                marker.style.color = `rgb(0, 0, 255)`;
+                break;
+              case "Self":
+                marker.style.color = `rgb(255, 255, 0)`;
+                break;
+              default:
+            }
+            marker.style.width = `60px`;
             // @ts-ignore
             marker.style["pointer-events"] = "auto";
             marker.style.cursor = "pointer";
-            marker.onclick = (e) => {
-              setSelectingRegionInProgress(true);
-              setTimeout(() => {
-                setSelectingRegionInProgress(false);
-              }, 200);
-              e.stopPropagation();
-              e.preventDefault();
-              if (e.shiftKey) {
-                setAnimate(false);
-                selectRegion(region as Region);
-                return;
-              }
-              setAnimate(true);
-              selectRegion(region as Region);
-              setTimeout(() => {
-                setAnimate(false);
-              }, 20);
-            };
+            marker.onclick = (e) => {};
+            console.log("here");
             return marker;
           }}
         />
